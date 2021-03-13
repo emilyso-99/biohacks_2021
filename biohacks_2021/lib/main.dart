@@ -1,3 +1,4 @@
+import 'package:biohacks_2021/location.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -77,14 +78,19 @@ class _MyHomePageState extends State<MyHomePage> {
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
           child: TextField(
-        obscureText: true,
+        keyboardType: TextInputType.multiline,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           labelText: 'Password',
         ),
+        minLines: 4,
+        maxLines: 6,
       )),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          Navigator.push(context,
+              new MaterialPageRoute(builder: (context) => new Locator()));
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
