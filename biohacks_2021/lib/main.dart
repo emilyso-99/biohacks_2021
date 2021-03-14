@@ -133,31 +133,39 @@ class _MyHomePageState extends State<MyHomePage> {
     'Anxiety': false,
     'Depression': false,
     'Sleep disorders': false,
-    'More severe and rare neurological complications such as strokes, brain inflammation, delirium and nerve damage.': false,
+    'More severe and rare neurological complications such as strokes, brain inflammation, delirium and nerve damage.':
+        false,
   };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-    
-    body: ListView(
-        children: values.keys.map((String key) {
-          return new CheckboxListTile(
-            title: Text(key),
-            value: values[key],
-            onChanged: (bool value) {
-              setState(() {
-                values[key] = value;
-              });
-            },
-          );
-        }).toList(),
-      ),
-    );
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
+        ),
+        body: Column(children: [
+          Expanded(
+              child: ListView(
+            children: values.keys.map((String key) {
+              return new CheckboxListTile(
+                title: Text(key),
+                value: values[key],
+                onChanged: (bool value) {
+                  setState(() {
+                    values[key] = value;
+                  });
+                },
+              );
+            }).toList(),
+          )),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => new Locator()));
+              },
+              child: Text("Next"))
+        ]));
   }
 }

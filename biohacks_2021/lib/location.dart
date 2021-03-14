@@ -1,3 +1,4 @@
+import 'package:biohacks_2021/main.dart';
 import 'package:flutter/material.dart';
 import 'package:nominatim_location_picker/nominatim_location_picker.dart';
 //import 'package:flutter_map/flutter_map.dart';
@@ -107,8 +108,31 @@ class _MyHomePageState extends State<MyHomePage> {
         Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
           child: _pickedLocation != null
-              ? Center(child: Text("$_pickedLocation"))
-              : nominatimButton(Colors.blue, ' Location Picker'),
+              ? Center(
+                  child: Column(
+                  children: [
+                    Text(
+                      "You specified your location to be the following:",
+                      style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      this._pickedLocation["desc"],
+                      style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => new MyApp()),
+                          );
+                        },
+                        child: Text("Next"))
+                  ],
+                ))
+              : nominatimButton(Colors.blue, 'Select my Location'),
         ),
       ],
     );
@@ -117,6 +141,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey, appBar: appBar(), body: body(context));
+        backgroundColor: Colors.white, appBar: appBar(), body: body(context));
   }
 }
