@@ -125,6 +125,22 @@ class _LocatorStatePage extends State<LocatorPage> {
     return texts;
   }
 
+  int MakeWeights() {
+    int weights = 0;
+    for (var i in this.values.keys) {
+      if (i == "Fever" || i == "Dry cough" || i == "Fatigue") {
+        if (this.values[i] == true) {
+          weights += 2;
+        }
+      } else {
+        if (this.values[i] == true) {
+          weights += 1;
+        }
+      }
+    }
+    return weights;
+  }
+
   Widget body(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -136,17 +152,17 @@ class _LocatorStatePage extends State<LocatorPage> {
                   child: Column(
                   children: [
                     Text(
-                      "You specified your location to be the following:",
+                      "You specified your location to be the following:\n",
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      this._pickedLocation["desc"],
+                      "${this._pickedLocation["desc"]}\n",
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      "The current case count in your state is $cases and there have been $death total deaths.",
+                      "The current case count in your state is $cases and there have been $death total deaths.\n",
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     ),
