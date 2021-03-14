@@ -1,5 +1,5 @@
 import 'package:biohacks_2021/go_to_hospital.dart';
-import 'package:biohacks_2021/main.dart';
+import 'rest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:nominatim_location_picker/nominatim_location_picker.dart';
@@ -113,17 +113,16 @@ class _LocatorStatePage extends State<LocatorPage> {
   Widget appBar() {
     return AppBar(
       centerTitle: true,
-      title: Text('How to use'),
+      title: Text('Results'),
     );
   }
 
-  List<Widget> MakeList() {
-    List<Widget> texts = [];
+  String MakeList() {
+    String results = "";
     for (var i in this.values.keys) {
-      texts.add(Text("$i:${this.values[i].toString()}",
-          textAlign: TextAlign.left, style: TextStyle(fontSize: 14)));
+      results += "$i:${this.values[i].toString()}\n";
     }
-    return texts;
+    return results;
   }
 
   int MakeWeights() {
@@ -173,7 +172,7 @@ class _LocatorStatePage extends State<LocatorPage> {
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      "The current case count in your state is $cases and there have been $death total deaths. Please be mindful of this.\n",
+                      "The current case count in your state is $cases and there have been $death total deaths. Please be mindful of the shortage of medical resources during the COVID-19 Pandemic.\n",
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     ),
@@ -185,6 +184,12 @@ class _LocatorStatePage extends State<LocatorPage> {
                               MaterialPageRoute(
                                   builder: (context) => new Hospital()),
                             );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new Rest()),
+                            );
                           }
                         },
                         child: Text("Next"))
@@ -192,13 +197,12 @@ class _LocatorStatePage extends State<LocatorPage> {
                 ))
               : SingleChildScrollView(
                   child: Column(children: [
-                  for (var i in this.values.keys)
-                    new Text(
-                      "$i:${this.values[i].toString()}",
-                      style: TextStyle(fontSize: 16),
-                      textAlign: TextAlign.center,
-                    ),
-                  nominatimButton(Colors.blue, 'Select my Location'),
+                  new Text(
+                    MakeList(),
+                    style: TextStyle(fontSize: 13),
+                    textAlign: TextAlign.center,
+                  ),
+                  nominatimButton(Colors.blue, 'Next:Select my Location'),
                 ])),
         )
       ],
