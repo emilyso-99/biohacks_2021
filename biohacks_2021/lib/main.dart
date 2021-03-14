@@ -1,5 +1,6 @@
 import 'package:biohacks_2021/location.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,6 +25,52 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class LinkedLabelCheckbox extends StatelessWidget {
+  const LinkedLabelCheckbox({
+    this.label,
+    this.padding,
+    this.value,
+    this.onChanged,
+  });
+
+  final String label;
+  final EdgeInsets padding;
+  final bool value;
+  final Function onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                text: label,
+                style: TextStyle(
+                  color: Colors.blueAccent,
+                  decoration: TextDecoration.underline,
+                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    print('Label has been tapped.');
+                  },
+              ),
+            ),
+          ),
+          Checkbox(
+            value: value,
+            onChanged: (bool newValue) {
+              onChanged(newValue);
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -60,40 +107,57 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Source of information is from the World Health Organization:
+  // https://www.who.int/emergencies/diseases/novel-coronavirus-2019/question-and-answers-hub/q-a-detail/coronavirus-disease-covid-19
+  Map<String, bool> values = {
+    'Fever': false,
+    'Dry cough': false,
+    'Fatigue': false,
+    'Shortness of breath': false,
+    'Loss of appetite': false,
+    'Confusion': false,
+    'Persistent pain or pressure in the chest': false,
+    'High temperature (above 38 °C)': false,
+    'Loss of taste or smell': false,
+    'Nasal congestion': false,
+    'Conjunctivitis (also known as red eyes)': false,
+    'Sore Throat': false,
+    'Headache': false,
+    'Muscle or joint pain': false,
+    'Different types of skin rash': false,
+    'Nausea or vomiting': false,
+    'Diarrhea': false,
+    'Chills or dizziness': false,
+    'Irritability': false,
+    'Reduced consciousness (sometimes associated with seizures)': false,
+    'Anxiety': false,
+    'Depression': false,
+    'Sleep disorders': false,
+    'More severe and rare neurological complications such as strokes, brain inflammation, delirium and nerve damage.': false,
+  };
+
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: TextField(
-        keyboardType: TextInputType.multiline,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: 'Password',
-        ),
-        minLines: 4,
-        maxLines: 6,
-      )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              new MaterialPageRoute(builder: (context) => new Locator()));
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    
+    body: ListView(
+        children: values.keys.map((String key) {
+          return new CheckboxListTile(
+            title: Text(key),
+            value: values[key],
+            onChanged: (bool value) {
+              setState(() {
+                values[key] = value;
+              });
+            },
+          );
+        }).toList(),
+      ),
     );
   }
 }
