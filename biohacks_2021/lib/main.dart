@@ -95,6 +95,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // int _counter = 0;
+  DateTime now = new DateTime.now();
 
   void _incrementCounter() {
     setState(() {
@@ -146,6 +147,11 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Column(children: [
+          Text(
+            "The date is $now",
+            style: TextStyle(fontSize: 24),
+            textAlign: TextAlign.center,
+          ),
           Expanded(
               child: ListView(
             children: values.keys.map((String key) {
@@ -162,8 +168,10 @@ class _MyHomePageState extends State<MyHomePage> {
           )),
           ElevatedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => new Locator()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => new Locator(this.values)));
               },
               child: Text("Next"))
         ]));

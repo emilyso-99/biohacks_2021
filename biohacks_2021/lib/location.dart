@@ -1,32 +1,47 @@
 import 'package:biohacks_2021/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:nominatim_location_picker/nominatim_location_picker.dart';
 //import 'package:flutter_map/flutter_map.dart';
 
 class Locator extends StatelessWidget {
+  Map values;
+  Locator(Map<String, bool> values) {
+    this.values = values;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
           primarySwatch: Colors.blue, primaryColorBrightness: Brightness.dark),
-      home: MyHomePage(title: 'Example of usage'),
+      home: LocatorPage(this.values, title: 'Example of usage'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class LocatorPage extends StatefulWidget {
+  Map values;
+  LocatorPage(Map value, {Key key, this.title}) : super(key: key) {
+    // super(key: key);
+    this.values = value;
+  }
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LocatorStatePage createState() => _LocatorStatePage(this.values);
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LocatorStatePage extends State<LocatorPage> {
   Map _pickedLocation;
   var _pickedLocationText;
-
+  Map values;
+  String cases = "3598343";
+  String death = "55629";
+  _LocatorStatePage(Map values) {
+    this.values = values;
+  }
   Future getLocationWithNominatim() async {
     Map result = await showDialog(
         context: context,
@@ -101,6 +116,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  List<Widget> MakeList() {
+    List<Widget> texts = [];
+    for (var i in this.values.keys) {
+      texts.add(Text("$i:${this.values[i].toString()}",
+          textAlign: TextAlign.left, style: TextStyle(fontSize: 14)));
+    }
+    return texts;
+  }
+
   Widget body(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -121,6 +145,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     ),
+                    Text(
+                      "The current case count in your state is $cases and there have been $death total deaths.",
+                      style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      "Therefore, further questions will be asked to preserve medical resources",
+                      style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
+                    ),
                     ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -132,8 +166,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Text("Next"))
                   ],
                 ))
-              : nominatimButton(Colors.blue, 'Select my Location'),
-        ),
+              : SingleChildScrollView(
+                  child: Column(children: [
+                  for (var i in this.values.keys)
+                    new Text(
+                      "$i:${this.values[i].toString()}",
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                  nominatimButton(Colors.blue, 'Select my Location'),
+                ])),
+        )
       ],
     );
   }
