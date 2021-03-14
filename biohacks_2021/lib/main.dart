@@ -134,8 +134,12 @@ class _MyHomePageState extends State<MyHomePage> {
     'Anxiety': false,
     'Depression': false,
     'Sleep disorders': false,
-    'More severe and rare neurological complications such as strokes, brain inflammation, delirium and nerve damage.':
-        false,
+    'More severe and rare neurological complications such as strokes, brain inflammation, delirium and nerve damage.': false,
+    'Have travelled to another country within the last 14 days': false,
+    'Have been in contact with someone who has travelled to another country within the last 14 days': false,
+    'Have been in contact with someone who has sinced tested positive for COVID-19 within the last 14 days': false,
+    'Over the age of 60': false,
+    'Have a condition such as: cancer, chronic kidney disease, heart conditions, type II diabetes, pregnancy, down syndrome, immunocomprimised': false,
   };
 
   @override
