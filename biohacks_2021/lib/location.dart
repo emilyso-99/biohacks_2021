@@ -1,3 +1,4 @@
+import 'package:biohacks_2021/go_to_hospital.dart';
 import 'package:biohacks_2021/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -15,7 +16,7 @@ class Locator extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
           primarySwatch: Colors.blue, primaryColorBrightness: Brightness.dark),
-      home: LocatorPage(this.values, title: 'Example of usage'),
+      home: LocatorPage(this.values, title: 'Locator'),
     );
   }
 }
@@ -128,6 +129,16 @@ class _LocatorStatePage extends State<LocatorPage> {
   int MakeWeights() {
     int weights = 0;
     for (var i in this.values.keys) {
+      if (i == 'Have travelled to another country within the last 14 days' ||
+          i ==
+              'Have been in contact with someone who has travelled to another country within the last 14 days' ||
+          i == 'Over the age of 60' ||
+          i ==
+              'Have a condition such as: cancer, chronic kidney disease, heart conditions, type II diabetes, pregnancy, down syndrome, immunocompromised') {
+        if (this.values[i] == true) {
+          weights += 5;
+        }
+      }
       if (i == "Fever" || i == "Dry cough" || i == "Fatigue") {
         if (this.values[i] == true) {
           weights += 2;
@@ -162,22 +173,19 @@ class _LocatorStatePage extends State<LocatorPage> {
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      "The current case count in your state is $cases and there have been $death total deaths.\n",
-                      style: TextStyle(fontSize: 20),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "Therefore, further questions will be asked to preserve medical resources",
+                      "The current case count in your state is $cases and there have been $death total deaths. Please be mindful of this.\n",
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     ),
                     ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => new MyApp()),
-                          );
+                          if (MakeWeights() > 16) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new Hospital()),
+                            );
+                          }
                         },
                         child: Text("Next"))
                   ],
