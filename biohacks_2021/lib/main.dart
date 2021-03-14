@@ -181,7 +181,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(
                         builder: (context) => new Locator(this.values)));
               },
-              child: Text("Next"))
+              child: Text("Next")),
+          Text(
+            "Data sourced from the World Health Organization's COVID-19 Q&A",
+            style: TextStyle(fontSize: 12),
+            textAlign: TextAlign.center,
+          )
         ]));
   }
 }
